@@ -5,18 +5,7 @@ import { batch } from 'react-redux'
 import { useThree } from 'react-three-fiber'
 import { axis } from "../../../shared/IK/utils/TransformControls"
 
-import {connect} from 'react-redux'
-
-
-import {
-    getSelections,
-    getSceneObjects,
-  } from './../../../shared/reducers/shot-generator'
-
-import deepEqualSelector from './../../../utils/deepEqualSelector'
-
 const Group = React.memo(({ id, type, ...props }) => {
-
   const ref = useRef()
   const { scene } = useThree()
 
@@ -119,11 +108,6 @@ const Group = React.memo(({ id, type, ...props }) => {
     }
   }, [props.isSelected])
 
-  useEffect(()=>{
-    ref.current.position.copy(getCenterPosition())
-    ref.current.updateMatrixWorld(true)
-  },[props.x,props.y,props.z])
-
   return <group
   ref={ ref }
   userData={{ 
@@ -134,31 +118,5 @@ const Group = React.memo(({ id, type, ...props }) => {
   />
 
 })
-
-
-const getObjectInfo = (state) => {
-  const selected = getSelections(state)[0]
-  const object = getSceneObjects(state)[selected]
-
-  let rslt = {}
-
-  if (!object) {
-    return rslt
-  }
-
-  rslt = {
-    x: object.x,
-    y: object.y,
-    z: object.z
-  }
-
-
-  return rslt
-}
-
-const getObjectInfoMM = deepEqualSelector([getObjectInfo], (info) => info)
-
-const mapStateToProps = (state) => getObjectInfoMM(state)
-
-
-export default connect(mapStateToProps, null)(Group)
+ 
+export default Group
