@@ -1,5 +1,7 @@
 # Storyboarder
 
+*This is a privacy focused fork of Storyboarder so you can sleep well at night. All **server connections, auto-update features, telemetry, and analytics are completely removed**. Everything else is the same as the original software.*
+
 Storyboarder makes it easy to visualize a story as fast you can draw stick figures. Quickly draw to test if a story idea works. Create and show animatics to others. Express your story idea without making a movie.
 
 [![screenshot](https://user-images.githubusercontent.com/441117/27712058-4404e214-5cf3-11e7-8fa3-b88ae924d154.gif)](https://www.wonderunit.com/storyboarder)
