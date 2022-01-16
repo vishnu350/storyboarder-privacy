@@ -18,7 +18,7 @@ const observeStore = require('./shared/helpers/observeStore')
 const actions = require('./shared/actions')
 const defaultKeyMap = require('./shared/helpers/defaultKeyMap')
 
-const analytics = require('./analytics')
+//const analytics = require('./analytics')
 
 const fountain = require('./vendor/fountain')
 const fountainDataParser = require('./fountain-data-parser')
@@ -27,18 +27,18 @@ const fountainSceneIdUtil = require('./fountain-scene-id-util')
 const importerFinalDraft = require('./importers/final-draft')
 const xml2js = require('xml2js')
 
-const MobileServer = require('./express-app/app')
+//const MobileServer = require('./express-app/app')
 
 const preferencesUI = require('./windows/preferences')()
 const registration = require('./windows/registration/main')
 const shotGeneratorWindow = require('./windows/shot-generator/main')
 
-const JWT = require('jsonwebtoken')
+//const JWT = require('jsonwebtoken')
 
 const pkg = require('../../package.json')
 const util = require('./utils/index')
 const {settings:languageSettings} = require('./services/language.config')
-const autoUpdater = require('./auto-updater')
+//const autoUpdater = require('./auto-updater')
 const LanguagePreferencesWindow = require('./windows/language-preferences/main')
 //https://github.com/luiseduardobrito/sample-chat-electron
 
@@ -88,7 +88,7 @@ let toBeOpenedPath
 
 let isLoadingProject
 
-let appServer
+//let appServer
 
 // attempt to support older GPUs
 app.commandLine.appendSwitch('ignore-gpu-blacklist')
@@ -123,7 +123,7 @@ const syncLanguages = (dir, isLanguageFile, array) => {
 }
 
 app.on('ready', async () => {
-  analytics.init(prefs.enableAnalytics)
+  //analytics.init(prefs.enableAnalytics)
 
   const exporterFfmpeg = require('./exporters/ffmpeg')
   let ffmpegVersion = await exporterFfmpeg.checkVersion()
@@ -259,32 +259,32 @@ app.on('ready', async () => {
     }
   }
 
-  appServer = new MobileServer()
-  appServer.on('pointerEvent', (e)=> {
-    log.info('pointerEvent')
-  })
-  appServer.on('image', (e) => {
-    mainWindow.webContents.send('newBoard', 1)
-    mainWindow.webContents.send('importImage', e.fileData)
-  })
-  appServer.on('worksheet', (e) => {
-    mainWindow.webContents.send('importWorksheets', [e.fileData])
-  })
-  appServer.on('error', err => {
-    if (err.errno === 'EADDRINUSE') {
-      // dialog.showMessageBox(null, {
-      //   type: 'error',
-      //   message: 'Could not start the mobile web app server. The port was already in use. Is Storyboarder already open?'
-      // })
-    } else {
-      dialog.showMessageBox(null, {
-        type: 'error',
-        message: err
-      })
-    }
-  })
+  //appServer = new MobileServer()
+  //appServer.on('pointerEvent', (e)=> {
+  //  log.info('pointerEvent')
+  //})
+  //appServer.on('image', (e) => {
+  //  mainWindow.webContents.send('newBoard', 1)
+  //  mainWindow.webContents.send('importImage', e.fileData)
+  //})
+  //appServer.on('worksheet', (e) => {
+  //  mainWindow.webContents.send('importWorksheets', [e.fileData])
+  //})
+  //appServer.on('error', err => {
+  //  if (err.errno === 'EADDRINUSE') {
+  //    // dialog.showMessageBox(null, {
+  //    //   type: 'error',
+  //    //   message: 'Could not start the mobile web app server. The port was already in use. Is Storyboarder already open?'
+  //    // })
+  //  } else {
+  //    dialog.showMessageBox(null, {
+  //      type: 'error',
+  //      message: err
+  //    })
+  //  }
+  //})
 
-  await attemptLicenseVerification()
+  //await attemptLicenseVerification()
 
   // open the welcome window when the app loads up first
   openWelcomeWindow()
@@ -324,7 +324,7 @@ app.on('ready', async () => {
   }
 
 
-  setInterval(()=>{ analytics.ping() }, 60*1000)
+  //setInterval(()=>{ analytics.ping() }, 60*1000)
 })
 
 let openKeyCommandWindow = () => {
@@ -449,8 +449,8 @@ let openWelcomeWindow = () => {
   welcomeWindow.once('ready-to-show', () => {
     setTimeout(() => {
       welcomeWindow.show()
-      if (!isDev) autoUpdater.init()
-      analytics.screenView('welcome')
+      //if (!isDev) autoUpdater.init()
+      //analytics.screenView('welcome')
     }, 300)
 
   })
@@ -458,7 +458,7 @@ let openWelcomeWindow = () => {
   welcomeWindow.once('close', () => {
     welcomeWindow = null
     if (!welcomeInprogress) {
-      analytics.event('Application', 'quit')
+      //analytics.event('Application', 'quit')
       app.quit()
     } else {
       welcomeInprogress = false
@@ -956,7 +956,7 @@ const createAndLoadScene = async aspectRatio => {
   addToRecentDocs(storyboarderFilePath, newBoardObject)
   loadStoryboarderWindow(storyboarderFilePath)
 
-  analytics.event('Application', 'new', newBoardObject.aspectRatio)
+  //analytics.event('Application', 'new', newBoardObject.aspectRatio)
 }
 
 const createAndLoadProject = aspectRatio => {
@@ -1048,7 +1048,7 @@ let loadStoryboarderWindow = (filename, scriptData, locations, characters, board
       detail: 'In file: ' + source + '#' + lineno + ':' + colno
     })
     log.error(message, source, lineno, colno)
-    analytics.exception(message, source, lineno)
+    //analytics.exception(message, source, lineno)
   }
 
   ipcMain.on('errorInWindow', onErrorInWindow)
@@ -1056,7 +1056,7 @@ let loadStoryboarderWindow = (filename, scriptData, locations, characters, board
   mainWindow.once('ready-to-show', () => {
     mainWindow.webContents.send('load', [filename, scriptData, locations, characters, boardSettings, currentPath])
     isLoadingProject = false
-    analytics.screenView('main')
+    //analytics.screenView('main')
   })
 
   // TODO could move this to main-window code?
@@ -1096,15 +1096,15 @@ let loadStoryboarderWindow = (filename, scriptData, locations, characters, board
       //        (to take old's place)
       if (!isLoadingProject) {
         welcomeWindow.show()
-        analytics.screenView('welcome')
+        //analytics.screenView('welcome')
       }
 
-      appServer.setCanImport(false)
+      //appServer.setCanImport(false)
 
       // stop watching any fountain files
       if (scriptWatcher) { scriptWatcher.close() }
 
-      analytics.event('Application', 'close')
+      //analytics.event('Application', 'close')
     }
   })
 }
@@ -1392,7 +1392,7 @@ ipcMain.on('textInputMode', (event, arg)=> {
 
 ipcMain.on('preferences', (event, arg) => {
   preferencesUI.show()
-  analytics.screenView('preferences')
+  //analytics.screenView('preferences')
 })
 
 ipcMain.on('toggleGuide', (event, arg) => {
@@ -1466,19 +1466,19 @@ ipcMain.on('prefs:change', (event, arg) => {
 
 ipcMain.on('showKeyCommands', (event, arg) => {
   openKeyCommandWindow()
-  analytics.screenView('key commands')
+  //analytics.screenView('key commands')
 })
 
 ipcMain.on('analyticsScreen', (event, screenName) => {
-  analytics.screenView(screenName)
+  //analytics.screenView(screenName)
 })
 
 ipcMain.on('analyticsEvent', (event, category, action, label, value) => {
-  analytics.event(category, action, label, value)
+  //analytics.event(category, action, label, value)
 })
 
 ipcMain.on('analyticsTiming', (event, category, name, ms) => {
-  analytics.timing(category, name, ms)
+  //analytics.timing(category, name, ms)
 })
 
 ipcMain.on('log', (event, opt) => {
@@ -1486,7 +1486,7 @@ ipcMain.on('log', (event, opt) => {
 })
 
 ipcMain.on('workspaceReady', event => {
-  appServer.setCanImport(true)
+  //appServer.setCanImport(true)
 
   !loadingStatusWindow.isDestroyed() && loadingStatusWindow.hide()
 

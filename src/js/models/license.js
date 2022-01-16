@@ -5,7 +5,7 @@ const pkg = require('../../../package.json')
 
 const JWT = require('jsonwebtoken')
 
-const API_HOSTNAME = 'https://app.wonderunit.com'
+const API_HOSTNAME = 'localhost'
 const API_ROOT = `${API_HOSTNAME}/api`
 
 // renderer has `URL`, but main (node) does not

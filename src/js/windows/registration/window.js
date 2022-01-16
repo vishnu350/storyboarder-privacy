@@ -15,14 +15,14 @@ const store = configureStore(getInitialStateRenderer(), 'renderer')
 const fetchWithTimeout = require('../src/js/utils/fetchWithTimeout')
 
 const { API_ROOT } = require('../src/js/models/license')
-const SIGN_UP_URI = 'https://app.wonderunit.com/signup'
+const SIGN_UP_URI = 'localhost'
 
 
 let view
 
 const licenseKeyPath = path.join(app.getPath('userData'), 'license.key')
 
-const authSelector = state => state.auth['app.wonderunit.com'] || {}
+const authSelector = state => state.auth['localhost'] || {}
 const hasValidAuthToken = () => {
   if (authSelector(store.getState()).token == null) return false
   return JWT.decode(authSelector(store.getState()).token).exp > Date.now() / 1000
@@ -172,7 +172,7 @@ class SignInView {
         store.dispatch({
           type: 'SET_AUTH',
           payload: {
-            service: 'app.wonderunit.com',
+            service: 'localhost',
             ...json
           }
         })
